@@ -90,19 +90,45 @@
         const trackList = document.getElementById("trackList");
         const progressContainer = document.getElementById("progressContainer");
         const progressBar = document.getElementById("progressBar");
+        const tracks = trackList.getElementsByTagName("li");
 
+        let currentTrackIndex = 0;
+
+        // Function to load and play a track
+        function loadTrack(index) {
+            if (tracks[index]) {
+                audio.src = tracks[index].getAttribute("data-src");
+                audio.play();
+            }
+        }
+
+        // Load first track by default
+        if (tracks.length > 0) {
+            audio.src = tracks[0].getAttribute("data-src");
+        }
+
+        // Handle clicking on a track
         trackList.addEventListener("click", (e) => {
             if (e.target.tagName === "LI") {
-                audio.src = e.target.getAttribute("data-src");
-                audio.play();
+                currentTrackIndex = Array.from(tracks).indexOf(e.target);
+                loadTrack(currentTrackIndex);
             }
         });
 
+        // Play button should start playback of the first loaded track
+        audio.addEventListener("play", () => {
+            if (!audio.src) {
+                loadTrack(currentTrackIndex);
+            }
+        });
+
+        // Update progress bar
         audio.addEventListener("timeupdate", () => {
             const progress = (audio.currentTime / audio.duration) * 100;
             progressBar.style.width = `${progress}%`;
         });
 
+        // Allow clicking on the progress bar to seek
         progressContainer.addEventListener("click", (e) => {
             const width = progressContainer.clientWidth;
             const clickX = e.offsetX;
