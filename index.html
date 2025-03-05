@@ -122,6 +122,12 @@
             }
         });
 
+        // Play the next track when the current one ends
+        audio.addEventListener("ended", () => {
+            currentTrackIndex = (currentTrackIndex + 1) % tracks.length; // Loop back if at the end
+            loadTrack(currentTrackIndex);
+        });
+
         // Update progress bar
         audio.addEventListener("timeupdate", () => {
             const progress = (audio.currentTime / audio.duration) * 100;
