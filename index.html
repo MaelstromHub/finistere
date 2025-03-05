@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zarah Müller & Maël Péneau Finistère (Demos)</title>
+    <style>
+        body {
+            font-family: Garamond, serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #222;
+            color: white;
+            padding: 20px;
+        }
+        .player-container {
+            background: #333;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            width: 300px;
+            text-align: center;
+        }
+        .track-list {
+            list-style: none;
+            padding: 0;
+        }
+        .track-list li {
+            padding: 10px;
+            border-bottom: 1px solid #555;
+            cursor: pointer;
+        }
+        .track-list li:hover {
+            background: #444;
+        }
+        .progress-container {
+            width: 100%;
+            height: 5px;
+            background: #555;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+        .progress-bar {
+            width: 0;
+            height: 5px;
+            background: #ff4500;
+        }
+        .title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: normal;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 20px;
+            font-weight: normal;
+        }
+        .demos {
+            text-align: center;
+            font-size: 18px;
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title">Zarah Müller & Maël Péneau</h1>
+    <h2 class="subtitle">Finistère</h2>
+    <h3 class="demos">(Demos)</h3>
+    <div class="player-container">
+        <h3>Lecteur Audio</h3>
+        <audio id="audio" controls></audio>
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <ul class="track-list" id="trackList">
+            <li data-src="https://maelstromhub.github.io/audio/Spartacus%20Love%20Theme.mp3">Spartacus Love Theme</li>
+            <li data-src="https://maelstromhub.github.io/audio/PF15.mp3">PF15</li>
+            <li data-src="https://maelstromhub.github.io/audio/Sunday.mp3">Dimanche Incertitude Étoilée</li>
+            <li data-src="https://maelstromhub.github.io/audio/Fua%20Fua.mp3">Fuafua</li>
+            <li data-src="https://maelstromhub.github.io/audio/the%20Body%20Clock.mp3">The Body Clock</li>
+            <li data-src="https://maelstromhub.github.io/audio/Quidam.mp3">Quidam</li>
+            <li data-src="https://maelstromhub.github.io/audio/Open%20Close.mp3">Open Close</li>
+        </ul>
+    </div>
+    <p><a href="mailto:maelstrom1900@gmail.com">contact</a></p>
+
+    <script>
+        const audio = document.getElementById("audio");
+        const trackList = document.getElementById("trackList");
+        const progressContainer = document.getElementById("progressContainer");
+        const progressBar = document.getElementById("progressBar");
+
+        trackList.addEventListener("click", (e) => {
+            if (e.target.tagName === "LI") {
+                audio.src = e.target.getAttribute("data-src");
+                audio.play();
+            }
+        });
+
+        audio.addEventListener("timeupdate", () => {
+            const progress = (audio.currentTime / audio.duration) * 100;
+            progressBar.style.width = `${progress}%`;
+        });
+
+        progressContainer.addEventListener("click", (e) => {
+            const width = progressContainer.clientWidth;
+            const clickX = e.offsetX;
+            const duration = audio.duration;
+            audio.currentTime = (clickX / width) * duration;
+        });
+    </script>
+</body>
+</html>
